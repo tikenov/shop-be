@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Product Service API
+  version: 1.0.0
+servers:
+  - url: https://bwfxrv0pti.execute-api.eu-west-1.amazonaws.com
+paths:
+  /products:
+    get:
+      summary: Get products list
+      operationId: getProductsList
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+  /products/{productId}:
+    get:
+      summary: Get product by id
+      operationId: getProductsById
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: product identificator
+          schema:
+            type: string
+            example: "1614" 
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        count:
+          type: number
+          example: 5
+        description:
+          type: string
+          example: "Fresh bananas from Africa."
+        id:
+          type: string
+          example: "1614"
+        price: 
+          type: number
+          example: 10
+        title: 
+          type: string
+          example: "Banana"
+        image: 
+          type: string
+          example: "https://source.unsplash.com/Kl3467edwsE"
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Product not found
